@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable;
+//use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
-//use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends BaseModel //Authenticatable
+class User extends Authenticatable
 {
-    use Authenticatable, Authorizable, CanResetPassword,Notifiable;
+    use Notifiable;
+    //use Authenticatable, Authorizable, CanResetPassword,Notifiable;
 
     protected $table = "users";
 
@@ -20,7 +21,7 @@ class User extends BaseModel //Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'full_name','full_name_case', 'email', 'password', 'position_id'
     ];
 
     /**
