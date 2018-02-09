@@ -1,13 +1,19 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+//use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    //use Authenticatable, Authorizable, CanResetPassword,Notifiable;
+
+    protected $table = "users";
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'full_name','full_name_case', 'email', 'password', 'position_id'
     ];
 
     /**
@@ -26,4 +32,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
 }
