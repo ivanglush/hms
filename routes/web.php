@@ -20,3 +20,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::get('/register', 'Auth\RegisterController@getRegister');
+
+Route::get('/system_parameters', 'SystemParametersController@index');
+Route::get('/system_parameters/edit', 'SystemParametersController@edit');
+Route::post('/system_parameters', 'SystemParametersController@update');
+
+Route::get('/positions', 'PositionController@index');
+Route::get('/positions/create', 'PositionController@create');
+Route::post('/positions', 'PositionController@add');
+Route::post('/positions/delete', 'PositionController@delete');
