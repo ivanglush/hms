@@ -29,3 +29,13 @@ Route::get('/positions', 'PositionController@index');
 Route::get('/positions/create', 'PositionController@create');
 Route::post('/positions', 'PositionController@add');
 Route::post('/positions/delete', 'PositionController@delete');
+
+Route::get('/users', 'UserController@index');
+Route::post('/users/block', 'UserController@changeLock');
+Route::get('/users/block/{id}', 'UserController@block');
+Route::get('/users/edit/{id}', 'UserController@edit');
+Route::post('/users', 'UserController@update');
+
+Route::get('/account', 'UserController@account');
+Route::get('/account/password', 'UserController@editPassword');
+Route::post('/account/password', 'UserController@changePassword');

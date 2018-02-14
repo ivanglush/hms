@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'full_name','full_name_case', 'email', 'password', 'position_id'
+        'full_name', 'full_name_case', 'email', 'password', 'position_id', 'role'
     ];
 
     /**
@@ -37,4 +37,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Request::class);
     }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
+    }
+
 }
