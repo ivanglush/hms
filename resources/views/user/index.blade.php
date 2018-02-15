@@ -49,7 +49,7 @@
                                 </tr>
                                 @endforeach
                     </table>
-                    <a class="btn btn-default pull-right" href="users/create">Добавить</a>
+                    {{--<a class="btn btn-default pull-right" href="users/create">Добавить</a>--}}
 
                     <div id="myModal" class="modal fade">
                         <div class="modal-dialog>">

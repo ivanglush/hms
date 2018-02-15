@@ -39,3 +39,8 @@ Route::post('/users', 'UserController@update');
 Route::get('/account', 'UserController@account');
 Route::get('/account/password', 'UserController@editPassword');
 Route::post('/account/password', 'UserController@changePassword');
+
+Route::get('/stats', 'StatisticsController@personalStats');
+
+Route::get('/requests', 'RequestController@personalRequests');
+Route::post('/requests', 'RequestController@add');
