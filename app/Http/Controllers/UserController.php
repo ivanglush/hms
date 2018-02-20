@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\Roles;
 use App\Models\Position;
 use App\Models\User;
+use App\Repository\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,14 +13,22 @@ use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
+    private $userRepository;
+
     public function __construct()
     {
         // $this->middleware('auth');
+//        $this->userRepository = $userRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        if ($request->sort_by == null) {
+            $users = User::paginate(10);
+//            $users = $this->userRepository->getAll();
+        } else {
+            $users = User::orderBy($request->sort_by)->paginate(10);
+        }
 
         return view('user.index', compact('users'));
     }
@@ -27,6 +36,7 @@ class UserController extends Controller
     public function changeLock(Request $request)
     {
         $user = User::find($request->input('user_id'));
+//        $user = $this->userRepository->get($request->user_id);
         $user->is_blocked = !$user->is_blocked;
         if ($user->is_blocked) {
             $user->blocked_description = $request->input('blocked_description');
@@ -34,6 +44,7 @@ class UserController extends Controller
             $user->blocked_description = "";
         }
         $user->update();
+//        $this->userRepository->update($user);
 
         return redirect('/users');
     }
@@ -87,7 +98,7 @@ class UserController extends Controller
 
     public function account()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
         return view('user.account', compact('user'));
     }

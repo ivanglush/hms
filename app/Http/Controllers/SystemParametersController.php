@@ -30,6 +30,9 @@ class SystemParametersController extends Controller
 
     public function update(Request $request)
     {
+        $this->validate($request, [
+            'value' => 'required',
+        ]);
         $systemParameters = $this->systemParametersRepository->getAll();
         foreach ($systemParameters as $parameter) {
             $parameter['value'] = $request->get($parameter->name);

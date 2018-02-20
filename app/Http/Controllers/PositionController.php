@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PositionRequest;
 use App\Models\Position;
 use Illuminate\Http\Request;
 
@@ -17,20 +18,19 @@ class PositionController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('position_id');
-        Position::destroy($id);
-        //$position->delete();
+        $position = Position::findOrFail($id);
+        $position->delete();
 
         return redirect('positions');
     }
 
     public function create()
     {
-        $positions = Position::all();
 
         return view('position.create', compact('positions'));
     }
 
-    public function add(Request $request)
+    public function add(PositionRequest $request)
     {
         $position = new Position();
         $position->position_name = $request->input('position_name');

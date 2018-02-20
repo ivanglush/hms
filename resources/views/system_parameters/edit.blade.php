@@ -21,7 +21,6 @@
                                 </div>
                                 </div>
                             @endforeach
-
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
@@ -30,6 +29,13 @@
                                 </div>
                             </div>
                         </form>
+                        @if($errors->any())
+                            <ul class="alert alert-danger">
+                                @foreach($errors->all() as  $error)
+                                    <li>{{$error}}</li>
+                                @endforeach
+                            </ul>
+                        @endif
                     </div>
                 </div>
             </div>

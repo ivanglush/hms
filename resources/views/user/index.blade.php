@@ -8,9 +8,9 @@
                 <div class="panel-body">
                     <table class="table table-bordered">
                         <tr>
-                            <th>ФИО</th>
+                            <th><a href="/users?sort_by=full_name">ФИО</a> </th>
                             <th>ФИО в род. падеже</th>
-                            <th>Email</th>
+                            <th><a href="/users?sort_by=email">Email</a></th>
                             <th>Адрес</th>
                             <th>Роль</th>
                             <th>Должность</th>
@@ -31,26 +31,23 @@
                                     <td>{{$user->position->position_name}}</td>
                                     <td>{{$user->blocked_description}}</td>
                                     <td>
-                                        <a class="btn btn-default" href="users/edit/{{$user->id}}">Изменить</a>
-{{--                                        @if($user->is_blocked)
-                                            <a href="#myModal" class="btn btn-info" data-toggle="modal">Разблокировать</a>
-                                        @else
-                                            <a href="#myModal" class="btn btn-danger"
-                                               data-toggle="modal">Заблокировать</a>
-                                        @endif--}}
-                                        @if($user->is_blocked)
-                                            <a href="/users/block/{{$user->id}}" class="btn btn-info" data-toggle="modal">Разблокировать</a>
-                                        @else
-                                            <a href="/users/block/{{$user->id}}" class="btn btn-danger"
-                                               data-toggle="modal">Заблокировать</a>
-                                        @endif
-
+                                        <div class="btn-group-vertical" role="group" aria-label="a">
+                                            <a class="btn btn-default " href="users/edit/{{$user->id}}" role="button">Изменить</a>
+                                            @if($user->is_blocked)
+                                                <a href="/users/block/{{$user->id}}" class="btn btn-info"
+                                                   data-toggle="modal">Разблокировать</a>
+                                            @else
+                                                <a href="/users/block/{{$user->id}}" class="btn btn-danger"
+                                                   role="button"
+                                                   data-toggle="modal">Заблокировать</a>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
                     </table>
                     {{--<a class="btn btn-default pull-right" href="users/create">Добавить</a>--}}
-
+                    <div class="col-md-offset-5">{{$users->render()}}</div>
                     <div id="myModal" class="modal fade">
                         <div class="modal-dialog>">
                             <div class="modal-content">

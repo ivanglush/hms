@@ -3,11 +3,17 @@
 namespace App\Models;
 
 //use Illuminate\Auth\Authenticatable;
+use App\Models\RequestHistory;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * @property mixed $request_histories
+ * @property mixed $position
+ * @property mixed $requests
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -41,6 +47,11 @@ class User extends Authenticatable
     public function position()
     {
         return $this->belongsTo(Position::class);
+    }
+
+    public function requestHistories()
+    {
+        return $this->hasMany(RequestHistory::class);
     }
 
 }
