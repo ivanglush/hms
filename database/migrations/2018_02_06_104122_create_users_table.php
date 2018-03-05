@@ -18,8 +18,8 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('full_name');
-            $table->string('full_name_case');
+            $table->string('full_name')->nullable();
+            $table->string('full_name_case')->nullable();
             $table->string('address')->nullable();
             $table->integer('blocked_by')->unsigned()->nullable();
             $table->boolean('is_blocked')->default(false);
