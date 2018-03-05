@@ -13,7 +13,17 @@
                             @foreach($systemParameters as $parameter)
                                 <div class="form-group">
                                 <label for="{{$parameter->name}}"
-                                       class="col-md-4 control-label">{{$parameter->name}}</label>
+                                       class="col-md-5 control-label">
+                                    @if($parameter->name==\App\Enums\SystemParameters::ORGANISATION_NAME)
+                                        Название организации:
+                                    @elseif($parameter->name==\App\Enums\SystemParameters::DIRECTOR_FULL_NAME)
+                                        Директор:
+                                    @elseif($parameter->name==\App\Enums\SystemParameters::MAX_HOLIDAY_DURATION)
+                                        Максимальная длительность отпуска:
+                                    @elseif($parameter->name==\App\Enums\SystemParameters::MIN_HOLIDAY_DURATION)
+                                        Минимальная длительность отпуска:
+                                    @endif
+                                </label>
                                 <div class="col-md-6">
                                     <input id="{{$parameter->name}}" type="text" class="form-control"
                                            name="{{$parameter->name}}"
@@ -22,7 +32,7 @@
                                 </div>
                             @endforeach
                             <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
+                                <div class="col-md-6 col-md-offset-5">
                                     <button type="submit" class="btn btn-primary">
                                         Изменить
                                     </button>

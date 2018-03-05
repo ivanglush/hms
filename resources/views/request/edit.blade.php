@@ -14,14 +14,14 @@
                                 <label for="start_date" class="col-md-4 control-label">Дата начала</label>
                                 <div class="col-md-6">
                                     <input id="start_date" type="date" class="form-control" name="start_date"
-                                           value="{{$request->start_date}}">
+                                           value="{{$request->start_date->format('Y-m-d')}}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="end_date" class="col-md-4 control-label">Дата окончания</label>
                                 <div class="col-md-6">
                                     <input id="end_date" type="date" class="form-control" name="end_date"
-                                           value="{{$request->end_date}}">
+                                           value="{{$request->end_date->format('Y-m-d')}}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -38,6 +38,13 @@
                             </div>
                         </form>
                         </form>
+                        @if($errors->any())
+                            <ul class="alert alert-danger">
+                                @foreach($errors->all() as  $error)
+                                    <li>{{$error}}</li>
+                                @endforeach
+                            </ul>
+                        @endif
                     </div>
                 </div>
             </div>

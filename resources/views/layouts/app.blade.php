@@ -10,7 +10,7 @@
 
     <title>{{ config('app.name', 'HMS') }}</title>
 {{--<title>Holiday Management System</title>--}}
-    <!-- Styles -->
+<!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
 
     <!-- Scripts -->
@@ -19,6 +19,7 @@
             'csrfToken' => csrf_token(),
         ]) !!}
     </script>
+
 </head>
 <body>
 <div id="app">
@@ -50,18 +51,21 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     @if(!Auth::guest() && Auth::user()->role==\App\Enums\Roles::LEADER)
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            Администрирование<span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url('/system_parameters') }}">Параметры системы</a></li>
-                            <li><a href="{{ url('/positions') }}">Должности</a></li>
-                            <li><a href="{{ url('/users') }}">Пользователи</a></li>
-                        </ul>
-                    </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">
+                                Администрирование<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('/system_parameters') }}">Параметры системы</a></li>
+                                <li><a href="{{ url('/positions') }}">Должности</a></li>
+                                <li><a href="{{ url('/users') }}">Пользователи</a></li>
+                                <li><a href="{{ url('/requests') }}">Заявки</a></li>
+                                <li><a href="{{ url('/statistics/year') }}">Статистика</a></li>
+                            </ul>
+                        </li>
                     @endif
-                    <!-- Authentication Links -->
+                <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Вход</a></li>
                         <li><a href="{{ url('/register') }}">Регистрация</a></li>
@@ -74,6 +78,8 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/account')}}">Личный кабинет</a></li>
+                                <li><a href="{{ url('/stats')}}">Статистика</a></li>
+                                <li><a href="{{ url('/home')}}">Заявки</a></li>
                                 <li>
                                     <a href="{{ url('/logout') }}"
                                        onclick="event.preventDefault();
@@ -94,10 +100,36 @@
         </div>
     </nav>
 
-    @yield('content')
 </div>
+@yield('content')
 
 <!-- Scripts -->
 <script src="/js/app.js"></script>
+{{--<script src="/bower_components/chart.js/dist/Chart.js"></script>
+<script>
+    var usedDays = $('#used_days').data("used-days");
+    var unusedDays = $('#unused_days').data("unused-days");
+    var year = $('#year').data("year");
+
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ["Использованные", "Неиспользованные"],
+            datasets: [{
+                label: "Дни отпуска",
+                backgroundColor: ["#3cba9f", "#c45850"],
+                data: [usedDays, unusedDays]
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Дни отпуска за ' + year + ' год'
+            }
+        }
+    });
+
+</script>--}}
 </body>
 </html>

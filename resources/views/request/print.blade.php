@@ -18,8 +18,8 @@
         </div>
         <div class="col-sm-offset-1">
             <p>Прошу предоставить очередной отпуск сроком {{$duration}} дней
-                с {{Carbon\Carbon::parse($request->start_date)->format('d-m-Y')}}.</p>
-            <p>{{$current_date}}</p>
+                с {{Carbon\Carbon::parse($request->start_date)->format('d.m.Y')}}.</p>
+            <p>{{ $current_date->format('d.m.Y') }}</p>
         </div>
         <div class="col-sm-offset-7">
             Подпись

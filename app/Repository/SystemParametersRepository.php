@@ -17,4 +17,9 @@ class SystemParametersRepository extends AbstractRepository
     {
         parent::__construct(SystemParameters::class);
     }
+
+    public function getMinHolidayDuration()
+    {
+        return $this->baseModel->where('name', \App\Enums\SystemParameters::MIN_HOLIDAY_DURATION)->first()->value;
+    }
 }

@@ -16,6 +16,13 @@ class Request extends BaseModel
         'start_date', 'end_date', 'comment'
     ];
 
+    public function getDates()
+    {
+        return array_merge(parent::getDates(), [
+            'start_date', 'end_date'
+        ]);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

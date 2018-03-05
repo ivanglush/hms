@@ -6,6 +6,31 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Заявки на отпуск</div>
                 <div class="panel-body">
+                    <form class="form-inline ">
+                        <select class="form-control" name="user_id">
+                            <option value=""></option>
+                            @foreach ($users as $user)
+                                <option value="{{$user->id }}"
+                                        @if($user->id==$selectedUser)
+                                        selected
+                                        @endif
+                                > {{ $user->full_name }}</option>
+                            @endforeach
+                        </select>
+                        <select class="form-control" name="state">
+                            <option value=""></option>
+                            @foreach ($states as $state)
+                                <option value="{{$state }}"
+                                         @if($selectedState==$state)
+                                         selected
+                                         @endif
+                                > {{ $state }}</option>
+                            @endforeach
+                        </select>
+                            <button type="submit" class="btn btn-primary">
+                                Фильтровать
+                            </button>
+                    </form>
                     <table class="table table-bordered">
                         <tr>
                             <th>ФИО</th>
@@ -50,50 +75,13 @@
                                             <a class="btn btn-default btn-block" role="button"
                                                href="requests/print/{{$request->id}}">Печать</a>
                                         @endif
+                                            <a class="btn btn-default btn-block" role="button"
+                                               href="requests/history/{{$request->id}}">История</a>
                                     </td>
                                 </tr>
                                 @endforeach
                     </table>
-                    <a href="#createRequest" class="btn btn-info" data-toggle="modal">Создать</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="createRequest" class="modal fade">
-        <div class="modal-dialog>">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X
-                    </button>
-                    <h4 class="modal-title">Создание заявки</h4>
-                </div>
-                <div class="modal-body">
-                    <form action="requests" method="POST">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <label for="start_date" class="control-label">Дата начала</label>
-                            <input id="start_date" type="date" class="form-control" name="start_date">
-                        </div>
-                        <div class="form-group">
-                            <label for="end_date" class="control-label">Дата окончания</label>
-                            <input id="end_date" type="date" class="form-control" name="end_date">
-                        </div>
-                        <div class="form-group">
-                            <label for="comment" class="control-label">Комментарий</label>
-                            <input id="comment" type="text" class="form-control" name="comment">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-info" type="submit">Создать</button>
-                        </div>
-                    </form>
-                    @if($errors->any())
-                        <ul class="alert alert-danger">
-                            @foreach($errors->all() as  $error)
-                                <li>{{$error}}</li>
-                            @endforeach
-                        </ul>
-                    @endif
+                    <a href="/requests/create" class="btn btn-info" data-toggle="modal">Создать</a>
                 </div>
             </div>
         </div>

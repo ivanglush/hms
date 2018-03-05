@@ -36,6 +36,6 @@ class AbstractRepository
 
     public function getAll()
     {
-        return $this->baseModel->query()->get();
+        return $this->baseModel->query()->paginate(10);
     }
 }

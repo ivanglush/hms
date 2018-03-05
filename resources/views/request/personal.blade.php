@@ -30,54 +30,23 @@
                                         @if($request->request_state=='waiting_for_response')
                                             <form action="requests/delete" method="POST">
                                                 {{ csrf_field() }}
-                                                <div class="btn-group-vertical" role="group" aria-label="a">
-                                                    <input type="hidden" name="request_id" value="{{$request->id}}">
-                                                    <a class="btn btn-default" href="requests/edit/{{$request->id}}"
-                                                       role="button">Изменить</a>
-                                                    <button class="btn btn-danger" type="submit">Удалить</button>
-                                                </div>
+                                                <input type="hidden" name="request_id" value="{{$request->id}}">
+                                                <a class="btn btn-default btn-block"
+                                                   href="requests/edit/{{$request->id}}"
+                                                   role="button">Изменить</a>
+                                                <button class="btn btn-danger btn-block" type="submit">Удалить</button>
                                             </form>
                                         @elseif($request->request_state=='accepted')
-                                            <a class="btn btn-default " role="button"
+                                            <a class="btn btn-default btn-block" role="button"
                                                href="requests/print/{{$request->id}}">Печать</a>
                                         @endif
+                                        <a class="btn btn-default btn-block" role="button"
+                                           href="requests/history/{{$request->id}}">История</a>
                                     </td>
                                 </tr>
                                 @endforeach
                     </table>
-                    <a href="#createRequest" class="btn btn-info" data-toggle="modal">Создать</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="createRequest" class="modal fade">
-        <div class="modal-dialog>">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X
-                    </button>
-                    <h4 class="modal-title">Создание заявки</h4>
-                </div>
-                <div class="modal-body">
-                    <form action="requests" method="POST">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <label for="start_date" class="control-label">Дата начала</label>
-                            <input id="start_date" type="date" class="form-control" name="start_date">
-                        </div>
-                        <div class="form-group">
-                            <label for="end_date" class="control-label">Дата окончания</label>
-                            <input id="end_date" type="date" class="form-control" name="end_date">
-                        </div>
-                        <div class="form-group">
-                            <label for="comment" class="control-label">Комментарий</label>
-                            <input id="comment" type="text" class="form-control" name="comment">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-info" type="submit">Создать</button>
-                        </div>
-                    </form>
+                    <a href="/requests/create" class="btn btn-info" data-toggle="modal">Создать</a>
                 </div>
             </div>
         </div>

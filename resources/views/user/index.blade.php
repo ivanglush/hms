@@ -48,38 +48,7 @@
                     </table>
                     {{--<a class="btn btn-default pull-right" href="users/create">Добавить</a>--}}
                     <div class="col-md-offset-5">{{$users->render()}}</div>
-                    <div id="myModal" class="modal fade">
-                        <div class="modal-dialog>">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X
-                                    </button>
-                                    <h4 class="modal-title">Блокировка пользователя</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="users/block" method="POST">
-                                        {{ csrf_field() }}
-                                        <div class="form-group">
-                                            <input type="hidden" name="user_id" value="{{$user->id}}">
-                                            @if($user->is_blocked)
-                                                <p>Вы уверены, что хотите разблокировать пользователя?</p>
-                                                <button class="btn btn-info" type="submit">Разблокировать</button>
-                                            @else
-                                                <label for="blocked_description" class="control-label">Причина
-                                                    блокировки</label>
-                                                <input id="blocked_description" type="text" class="form-control"
-                                                       name="blocked_description">
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-danger" type="submit">Заблокировать</button>
-                                            @endif
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    <a class="btn btn-default " href="users/create" role="button">Добавить</a>
                 </div>
             </div>
         </div>

@@ -6,7 +6,8 @@
  */
 
 require('./bootstrap');
-
+require('../../../bower_components/chart.js/dist/Chart');
+require('./statistic');
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -17,4 +18,5 @@ Vue.component('example', require('./components/Example.vue'));
 
 const app = new Vue({
     el: '#app'
-});
+});//?
+

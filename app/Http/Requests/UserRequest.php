@@ -13,7 +13,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,9 +23,11 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        $this->sometimes();
         return [
-            //
+            'full_name' => 'required',
+            'full_name_case' => 'required',
+            'email' => 'required|email',
+            'address' => 'required',
         ];
     }
 }

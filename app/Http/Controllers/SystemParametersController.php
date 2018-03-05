@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SystemParametersRequest;
 use App\Repository\SystemParametersRepository;
 use Illuminate\Http\Request;
 
@@ -28,11 +29,8 @@ class SystemParametersController extends Controller
         return view('system_parameters.edit', ['systemParameters' => $systemParameters]);
     }
 
-    public function update(Request $request)
+    public function update(SystemParametersRequest $request)
     {
-        $this->validate($request, [
-            'value' => 'required',
-        ]);
         $systemParameters = $this->systemParametersRepository->getAll();
         foreach ($systemParameters as $parameter) {
             $parameter['value'] = $request->get($parameter->name);

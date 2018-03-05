@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Enums\RequestState;
+use App\Http\Requests\RequestRequest;
 use App\Mail\RequestStateChanged;
 use App\Models\RequestHistory;
 use App\Models\SystemParameters;
 use App\Models\User;
 
+use App\Repository\RequestHistoryRepository;
+use App\Repository\RequestRepository;
+use App\Repository\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +20,17 @@ use Illuminate\Support\Facades\Mail;
 
 class RequestController extends Controller
 {
+    private $requestRepository;
+    private $requestHistoryRepository;
+    private $userRepository;
+
+    public function __construct(RequestRepository $requestRepository, RequestHistoryRepository $requestHistoryRepository, UserRepository $userRepository)
+    {
+        $this->requestRepository = $requestRepository;
+        $this->requestHistoryRepository = $requestHistoryRepository;
+        $this->userRepository = $userRepository;
+    }
+
     public function personalRequests()
     {
         $user = Auth::user();
@@ -26,34 +41,46 @@ class RequestController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->state != null) {
-            $requests = \App\Models\Request::where('request_state',$request->state)->paginate(10);
+        $selectedUser = $request->user_id;
+        $selectedState = $request->state;
+        if ($selectedUser != null) {
+            $requests =$this->requestRepository->getAllByUserId($selectedUser);
+            if ($selectedState != null ) {
+               $requests = $requests->where('request_state', $selectedState);
+            }
+        } else if ($selectedState != null ) {
+            $requests = $this->requestRepository->getAllByState($selectedState);
         } else {
-            $requests = \App\Models\Request::paginate(10);
+            $requests = $this->requestRepository->getAll();
         }
-        return view('request.index', compact('requests'));
+
+        $users = $this->userRepository->getAll();
+        $states = RequestState::getAll();
+
+        return view('request.index', compact('requests', 'users', 'states', 'selectedState', 'selectedUser'));
     }
 
     public function allByUserId($id, Request $request)
     {
         if ($request->state != null) {
-            $requests = \App\Models\Request::where('user_id',$id)->where('request_state',$request->state)->paginate(10);
+            $requests = $this->requestRepository->getAllByState($request->state)->where('user_id',$id);
         } else {
-            $requests = \App\Models\Request::where('user_id',$id)->paginate(10);
+            $requests = $this->requestRepository->getAll()->where('user_id', $id);
         }
-
 
         return view('request.index', compact('requests'));
     }
 
-    public function add(Request $request)
+    public function create()
+    {
+        $request = new \App\Models\Request();
+        return view('request.create');
+    }
+
+    public function add(RequestRequest $request)
     {
         /** @var User $user */
         $user = Auth::user();
-        $this->validate($request, [
-            'start_date' => 'required|date|after:tomorrow',
-            'end_date' => 'required|date|after:start_date',
-        ]);
         $newRequest = new \App\Models\Request();
 
         $newRequest->start_date = $request->start_date;
@@ -69,7 +96,8 @@ class RequestController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('request_id');
-        \App\Models\Request::findOrFail($id)->delete();
+//        \App\Models\Request::findOrFail($id)->delete();
+        $this->requestRepository->delete($this->requestRepository->get($id));
 
         return redirect()->back();
     }
@@ -84,44 +112,31 @@ class RequestController extends Controller
         return view('request.edit', compact('request'));
     }
 
-    public function update(Request $request)
+    public function update(RequestRequest $request)
     {
-        $this->validate($request, [
-            'start_date' => 'required|date|after:tomorrow',
-            'end_date' => 'required|date|after:start_date',
-        ]);
-        $oldRequest = \App\Models\Request::findOrFail($request->request_id);
+        $oldRequest = $this->requestRepository->get($request->request_id);
 
-        $oldRequest->update(Input::all());
+        $this->requestRepository->updateFields($oldRequest, Input::all());
 
         return redirect('/requests');
     }
 
     public function printRequest($id)
     {
-        $request = \App\Models\Request::findOrFail($id);
+        $request = $this->requestRepository->get($id);
         $user = $request->user;
         $system_parameters = SystemParameters::all();
-        $current_date = Carbon::today()->format('d-m-Y');
-        $duration = Carbon::parse($request->start_date)->diffInDays(Carbon::parse($request->end_date));
+        $current_date = Carbon::today();
+        $duration = $request->start_date->diffInDays($request->end_date);
 
         return view('request.print', compact('user', 'system_parameters', 'request', 'current_date', 'duration'));
     }
 
     public function changeState(Request $r)
     {
-        $request = \App\Models\Request::findOrFail($r->request_id);
+        $request = $this->requestRepository->get($r->request_id);
         $request->request_state = $r->new_state;
-        $request->save();
-        $history = new RequestHistory();
-//        $history->user()->save(Auth::user());
-//        $history->request()->save($request);
-        $history->user_id = Auth::id();
-        $history->request_id = $request->id;
-        $history->new_state = $r->new_state;
-        $history->save();
-
-        Mail::to($request->user)->send(new RequestStateChanged($history));
+        $this->requestRepository->save($request);
 
         // $user->requests()->save($newRequest);
         return redirect('/requests');

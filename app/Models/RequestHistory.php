@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property mixed $user
  * @property mixed $request
  */
-class RequestHistory extends Model
+class RequestHistory extends BaseModel
 {
     protected $table = "request_histories";
 

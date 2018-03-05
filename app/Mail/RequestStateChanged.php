@@ -13,10 +13,11 @@ class RequestStateChanged extends Mailable
     use Queueable, SerializesModels;
 
     public $history;
+
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param RequestHistory $history
      */
     public function __construct(RequestHistory $history)
     {
